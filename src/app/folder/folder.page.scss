@@ -1,28 +1,75 @@
-ion-menu-button {
-  color: var(--ion-color-primary);
+@import '../../theme/fonts.scss';
+
+.counter2 {
+  border: 2px solid;
+  border-radius: 50%;
+  height: 20rem;
+  width: 20rem;
+
+  display: inline-block;
+  line-height: 15rem;
+
 }
 
-#container {
+
+.module-border-wrap {
+  
   text-align: center;
+  display: inline-block;
+  padding: 1rem;
+  background: linear-gradient(320deg, rgba(149,12,12,1) 0%, rgba(22,34,140,) 100%);
+  padding: 0.7rem;
+  border-radius: 50%;
+}
+
+
+.module {
+  height: 20rem;
+  width: 20rem;
+  line-height: 15rem;
+  font-size: 8rem;
+  background: #222;
+  color: white;
+  padding: 2rem;
+  border-radius: 50%;
+}
+
+
+ion-content {
+  --background: linear-gradient(0deg, rgba(50,66,96,1) 0%, rgba(237,229,255,1) 100%);
+}
+
+ion-toolbar {
+   --ion-color-base: rgb(189, 174, 201, 1) !important;
+   --background: #bebdda;
+
+}
+
+.buttons-grid {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  bottom: 1rem;
+    left: 0;
+    right: 0;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+.minus-button {
+  height: 10rem; 
+  width: 10rem;
+  --border-radius: 50%;
+ 
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  color: #8c8c8c;
-  margin: 0;
+.reset-button {
+  height: 5rem; 
+font-weight: bold;
+  width: 5rem;
+  --border-radius: 50%;
+ 
 }
 
-#container a {
-  text-decoration: none;
+.header-title {
+  font-family: JosefinRegular;
+  font-size: 1.7rem;
+  font-weight: 300;
+  padding-top: 0.3rem;
 }

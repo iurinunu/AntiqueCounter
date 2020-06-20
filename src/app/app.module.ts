@@ -8,6 +8,12 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
+
+import { AdmobService } from './services/admob/admob.service';
+
+import { AdMobFree } from '@ionic-native/admob-free/ngx';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,12 +21,16 @@ import { AppRoutingModule } from './app-routing.module';
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    AdMobFree,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    AdmobService,
   ],
   bootstrap: [AppComponent]
 })

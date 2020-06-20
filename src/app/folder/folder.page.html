@@ -3,19 +3,63 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>{{ folder }}</ion-title>
+    <ion-title class="header-title">Counter</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">{{ folder }}</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-grid >
 
-  <div id="container">
-    <strong class="capitalize">{{ folder }}</strong>
-    <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+
+    <ion-row>
+      <ion-col *ngIf="id !== '0'" style="align-self: center; padding-left: 1rem;">
+        <span  style="font-size: 1.5rem; color: #696982">
+          {{folder}}
+        </span>
+      </ion-col>
+      <ion-col style="text-align: end;">
+        <ion-button color="danger" class="reset-button" (click)="reset()">
+          <span style="font-weight: 800;">
+            Reset
+          </span>
+         </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col style="text-align: center;">
+
+        <div *ngIf="limit>counter" class="module-border-wrap">
+          <div class="module">
+            {{counter}}
+          </div>
+        </div>
+
+        <div *ngIf="counter>=limit" class="module-border-wrap">
+          <div style="color:brown" class="module">
+            {{counter}}
+          </div>
+        </div>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+ 
+  
+  <ion-grid class="buttons-grid">
+    
+   <ion-row>
+
+     <ion-col style="text-align: center;">
+        <ion-button [disabled]="counter===0" class="minus-button" (click)="minus()">
+         <ion-icon style="font-size: 8rem;" name="remove-outline"></ion-icon>
+        </ion-button>
+     </ion-col>
+     <ion-col style="text-align: center;">
+       <ion-button  class="minus-button" (click)="plus()">
+        <ion-icon style="font-size: 8rem;" name="add-outline"></ion-icon>
+       </ion-button>
+    </ion-col>
+   </ion-row>
+ </ion-grid>
 </ion-content>

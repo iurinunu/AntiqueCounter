@@ -1,5 +1,7 @@
 {
   "name": "AntiqueCounter",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
