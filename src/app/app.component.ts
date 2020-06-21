@@ -1,11 +1,14 @@
+import { LoginPage } from './pages/login/login.page';
 import { Component, OnInit } from '@angular/core';
 
-import { Platform, AlertController, ToastController } from '@ionic/angular';
+import { Platform, AlertController, ToastController, ModalController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { StorageService, CounterItem } from './services/storage.service';
 import { Router } from '@angular/router';
 import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free/ngx';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +20,7 @@ export class AppComponent implements OnInit {
   newCounter: CounterItem = <CounterItem>{};
   counters: CounterItem[] = [];
 
+  loggedIn: boolean;
 
   public selectedIndex = 0;
   public selectedIndexYour = 0;
@@ -50,6 +54,10 @@ export class AppComponent implements OnInit {
     private router: Router,
     private toastCtrl: ToastController,
     private adMobFree: AdMobFree,
+
+    private afAuth: AngularFireAuth,
+    private modalCtrl: ModalController,
+    private db: AngularFirestore
   ) {
     this.initializeApp();
     
@@ -58,6 +66,17 @@ export class AppComponent implements OnInit {
 
   initializeApp() {
     this.platform.ready().then(() => {
+
+      this.afAuth.authState.subscribe((user) => {
+        if(!user) {
+          this.loggedIn = false;
+          this.router.navigateByUrl('login')
+        } else {
+          this.loggedIn = true;
+
+          this.router.navigateByUrl('/folder/standard/0/0/0');
+        }
+      })
 
       this.adMobFree.banner.config(this.bannerConfig);
       this.adMobFree.banner.prepare().then(() => {
@@ -75,11 +94,54 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+
     const path = window.location.pathname.split('folder/')[1];
     if (path !== undefined) {
       this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
     }
 
+    this.afAuth.authState.subscribe((user) => {
+      if(!user) {
+        return;
+
+      } else {
+
+      console.log(user);
+
+     // this.db.collection(`users/${user}/counters`).snapshotChanges().subscribe((colSnap) => {
+    
+
+        // this.appPages = [
+        //   {
+        //     title: 'Standard',
+        //     url: '/folder/standard/0/0/0',
+        //     counter: 0,
+        //     id: null,
+        //     limit: null,
+        //   },
+          
+        // ];
+        // if(colSnap) {
+        //   colSnap.forEach((item) => {
+
+        //     let counter: any = item.payload.doc.data();
+
+        //     this.appPages.push(
+        //       {
+        //         title: counter.name,
+        //         url: '/folder/'+counter.name+'/'+counter.counter+'/'+counter.id+'/'+counter.limit, 
+        //         counter: counter.counter,
+        //         id: counter.id,  
+        //         limit: counter.limit,
+        //       }
+        //   )
+        // })
+        // }
+  //  });  
+  }
+    });
+
+  
     
   }
 
@@ -174,6 +236,13 @@ export class AppComponent implements OnInit {
     this.newCounter.id = now.toString();
     this.newCounter.name = name;
     this.newCounter.limit = limit;
+
+    this.db.collection(`users/${this.afAuth.currentUser}/counters`).add({
+      id: this.newCounter.id,
+      counter: counter,
+      name: name,
+      limit: limit,
+    })
 
     this.storage.addItem(this.newCounter).then(item => {
       this.newCounter = <CounterItem>{};

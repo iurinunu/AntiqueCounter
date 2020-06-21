@@ -1,0 +1,40 @@
+@import '../../../theme/fonts.scss';
+
+p {
+    text-align: center;
+    color: #2c3052 !important;
+}
+ion-content {
+    --ion-background-color: linear-gradient(0deg, rgb(76, 92, 122) 0%, rgb(240, 235, 253) 100%);
+}
+  ion-toolbar {
+    --background-color: transparent !important;
+     --ion-color-base: transparent !important;
+     --background: transparent!important;
+  }
+  .done {
+    font-family: JosefinRegular;;
+    font-size: 2rem;
+  }
+  .firebaseui-container {
+    background: rgb(179, 85, 75);
+    background-color: rgb(179, 85, 75);
+
+
+  }
+  .divWelcome {
+      color: rgb(31, 31, 31);
+    position: absolute;
+    bottom: 4em;
+    width: 100%;
+  }
+  .welcome {
+    
+    text-align: center;
+    font-size: 1.5rem;
+  }
+  .welcomeDone {
+    text-align: center;
+    font-family: JosefinRegular;;
+    font-size: 2.4rem;
+  }

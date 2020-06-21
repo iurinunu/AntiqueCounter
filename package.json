@@ -15,6 +15,7 @@
   "dependencies": {
     "@angular/common": "~9.1.6",
     "@angular/core": "~9.1.6",
+    "@angular/fire": "^6.0.0",
     "@angular/forms": "~9.1.6",
     "@angular/platform-browser": "~9.1.6",
     "@angular/platform-browser-dynamic": "~9.1.6",
@@ -28,6 +29,7 @@
     "cordova-android": "8.1.0",
     "cordova-plugin-admob-free": "^0.27.0",
     "cordova-promise-polyfill": "0.0.2",
+    "firebaseui-angular": "^5.0.0",
     "localforage": "^1.7.4",
     "rxjs": "~6.5.1",
     "tslib": "^1.10.0",

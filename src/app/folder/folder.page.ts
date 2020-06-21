@@ -1,3 +1,4 @@
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Platform } from '@ionic/angular';
 import { StorageService } from './../services/storage.service';
 import { Component, OnInit } from '@angular/core';
@@ -19,7 +20,7 @@ export class FolderPage implements OnInit {
   public updateItem: CounterItem = <CounterItem>{};
 
   constructor(private activatedRoute: ActivatedRoute, private storageService: StorageService,
-    private admobService: AdmobService, private platform: Platform) { 
+    private admobService: AdmobService, private platform: Platform, private db: AngularFirestore) { 
 
       
 
