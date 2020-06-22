@@ -32,12 +32,12 @@ export class AppComponent implements OnInit {
     
   ];
 
-   bannerConfig: AdMobFreeBannerConfig = {
-    id: 'ca-app-pub-4479311405222115/3044213231',
-    isTesting: false,
-    autoShow: true,
-    size: 'BANNER',
-  }
+  //  bannerConfig: AdMobFreeBannerConfig = {
+  //   id: 'ca-app-pub-4479311405222115/3044213231',
+  //   isTesting: false,
+  //   autoShow: true,
+  //   size: 'BANNER',
+  // }
   
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
@@ -59,11 +59,11 @@ export class AppComponent implements OnInit {
   initializeApp() {
     this.platform.ready().then(() => {
 
-      this.adMobFree.banner.config(this.bannerConfig);
-      this.adMobFree.banner.prepare().then(() => {
+    //   this.adMobFree.banner.config(this.bannerConfig);
+    //   this.adMobFree.banner.prepare().then(() => {
 
 
-    }).catch(e=> console.log(e))
+    // }).catch(e=> console.log(e))
 
 
       this.statusBar.styleLightContent();
@@ -91,7 +91,7 @@ export class AppComponent implements OnInit {
   menuClose() {
     console.log("closed")
 
-    this.adMobFree.banner.show();
+  //  this.adMobFree.banner.show();
 
   }
   
@@ -184,7 +184,7 @@ export class AppComponent implements OnInit {
   loadCounters() {
     console.log("openedddd");
 
-    this.adMobFree.banner.hide();
+  //  this.adMobFree.banner.hide();
 
     this.storage.getItems().then((items: CounterItem[]) => {
       this.appPages = [
