@@ -8,6 +8,10 @@ import { LoginPageRoutingModule } from './login-routing.module';
 
 import { LoginPage } from './login.page';
 import {FirebaseUIModule, firebase, firebaseui} from 'firebaseui-angular';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppRoutingModule } from 'src/app/app-routing.module';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { environment } from 'src/environments/environment';
 
 
 const firebaseUiAuthConfig: firebaseui.auth.Config = {
@@ -18,7 +22,7 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
   ],
   // tosUrl: '<your-tos-link>',
   // privacyPolicyUrl: '<your-privacyPolicyUrl-link>',
-  credentialHelper: firebaseui.auth.CredentialHelper.NONE 
+  credentialHelper: firebaseui.auth.CredentialHelper.NONE
 };
 
 @NgModule({
@@ -27,7 +31,9 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     FormsModule,
     IonicModule,
     LoginPageRoutingModule,
-    FirebaseUIModule.forRoot(firebaseUiAuthConfig),
+    FormsModule,
+    AngularFireAuthModule,
+    FirebaseUIModule.forRoot(firebaseUiAuthConfig)
   ],
   declarations: [LoginPage],
   entryComponents: [LoginPage]

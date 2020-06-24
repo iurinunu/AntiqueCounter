@@ -12,13 +12,13 @@ export class SettingsPage implements OnInit {
   user;
 
   constructor(
-    private afAuth: AngularFireAuth
+   // private afAuth: AngularFireAuth
   ) {
-    this.afAuth.authState.subscribe((user) => {
-      if(!user) {
-        this.user = user;
-      }
-    })
+    // this.afAuth.authState.subscribe((user) => {
+    //   if(!user) {
+    //     this.user = user;
+    //   }
+    // })
    }
 
   ngOnInit() {

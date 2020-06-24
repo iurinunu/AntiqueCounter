@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CounterItem } from '../services/storage.service';
 import { AdmobService } from '../services/admob/admob.service';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-folder',
@@ -17,10 +18,15 @@ export class FolderPage implements OnInit {
   public id: string;
   public limit: number;
 
+  private userId;
+
+  up;
+
   public updateItem: CounterItem = <CounterItem>{};
 
   constructor(private activatedRoute: ActivatedRoute, private storageService: StorageService,
-    private admobService: AdmobService, private platform: Platform, private db: AngularFirestore) { 
+    private admobService: AdmobService, private platform: Platform, private db: AngularFirestore,
+    private afAuth: AngularFireAuth,) { 
 
       
 
@@ -37,22 +43,64 @@ export class FolderPage implements OnInit {
       this.limit= Infinity;
     }
 
+    this.afAuth.authState.subscribe((user) => {
+      if(!user) {
+        return;
+
+      } else {
+
+
+    console.log(user);
+
+    this.userId = user.uid; 
+
+
+    this.db.collection(`users/${user.uid}/counters`).snapshotChanges().subscribe(colSnap => {
+      let items = [];
+      colSnap.forEach(a => {
+        let item: any = a.payload.doc.data();
+        if (this.id === a.payload.doc.id) {
+          this.counter = item.counter;
+
+        }
+        // item['id'] = a.payload.doc.id;
+        items.push(item);
+      });
+      console.log(items);
+    });
+
+      }
+      
+    });
+
     //this.admobService.showBanner();
     // this.counter = 0;
     //this.showBanner();
   }
 
-  
+
   
   plus() {
-    this.counter++;
-    if (this.id != '0') {
+
+ 
+ this.counter++;
+    let counter = this.counter;
+        if (this.id != '0') {
+
+          console.log(`users/${this.userId}/counters/${this.id}`);
+
+      this.db.doc(`users/${this.userId}/counters/${this.id}`).set({
+        
+        counter: counter,
+        
+      }, {merge: true});
+
       this.updateItem.id = this.id;
-      this.updateItem.name = this.folder;
+      this.updateItem.name = this.id;
       this.updateItem.counter = this.counter;
       this.updateItem.limit = this.limit;
   
-      this.storageService.updateItem(this.updateItem);
+      // this.storageService.updateItem(this.updateItem);
       this.updateItem = <CounterItem>{};
     }
     
@@ -60,28 +108,47 @@ export class FolderPage implements OnInit {
 
   minus() {
     this.counter--;
+    let counter = this.counter;
     if (this.id != '0') {
+
+      
+      this.db.doc(`users/${this.userId}/counters/${this.id}`).set({
+        
+        counter: counter,
+        
+      }, {merge: true});
+
+
       this.updateItem.id = this.id;
-      this.updateItem.name = this.folder;
+      this.updateItem.name = this.id;
       this.updateItem.counter = this.counter;
       this.updateItem.limit = this.limit;
 
   
-      this.storageService.updateItem(this.updateItem);
+      // this.storageService.updateItem(this.updateItem);
       this.updateItem = <CounterItem>{};
     }
   }
 
   reset() {
     this.counter=0;
-    if (this.id != '0') {
+    let counter = this.counter;
+        if (this.id != '0') {
+
+      this.db.doc(`users/${this.userId}/counters/${this.id}`).set({
+        
+        counter: counter,
+        
+      }, {merge: true});
+
+
       this.updateItem.id = this.id;
-      this.updateItem.name = this.folder;
+      this.updateItem.name = this.id;
       this.updateItem.counter = this.counter;
       this.updateItem.limit = this.limit;
 
   
-      this.storageService.updateItem(this.updateItem);
+      //this.storageService.updateItem(this.updateItem);
       this.updateItem = <CounterItem>{};
     }
   }

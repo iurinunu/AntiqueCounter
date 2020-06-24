@@ -3,14 +3,25 @@
     <ion-menu *ngIf="loggedIn" contentId="main-content" type="overlay" (ionWillOpen)="loadCounters()"  (ionWillClose)="menuClose()" >
       <ion-content>
         <ion-list id="inbox-list">
-          <ion-list-header>Your Counters</ion-list-header>
-          <ion-note></ion-note>
+          <ion-grid>
+            <ion-row>
+              <ion-col style="align-self: center;" size="8">
+                <ion-list-header style="color: #413e3e;">Your Counters</ion-list-header>
+              </ion-col>
+              <ion-col size="4" style="text-align: end;">
+                <ion-button (click)="signOut()" fill="clear">
+                  <ion-icon size="large" style="color: brown;" slot="icon-only" name="log-out-outline"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
           
 
             <ion-item-sliding>
-              <ion-item (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" [class.selected]="selectedIndex == i" class="item-counter">
+              <ion-item style="color: #524b4b;" (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" [class.selected]="selectedIndex == i" class="item-counter">
                   <ion-label>{{ p.title }}</ion-label>
                   <ion-note *ngIf="p.id" style="margin-bottom: 0; color: black;" slot="end">
                     <span>
@@ -60,6 +71,12 @@
             </ion-item>
           </ion-menu-toggle>
         </ion-list> -->
+
+        <!-- <ion-fab vertical="top" horizontal="end" slot="fixed">
+          <ion-fab-button size="small" color="danger" (click)="addCounter()">
+            <ion-icon name="log-out-outline"></ion-icon>
+                    </ion-fab-button>
+        </ion-fab> -->
 
         <ion-fab vertical="bottom" horizontal="end" slot="fixed">
           <ion-fab-button color="tertiary" (click)="addCounter()">

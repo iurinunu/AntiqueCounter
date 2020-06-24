@@ -10,6 +10,8 @@ import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free/ngx';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 
+import * as firebase from 'firebase/app';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -21,6 +23,8 @@ export class AppComponent implements OnInit {
   counters: CounterItem[] = [];
 
   loggedIn: boolean;
+
+  private userId;
 
   public selectedIndex = 0;
   public selectedIndexYour = 0;
@@ -88,7 +92,7 @@ export class AppComponent implements OnInit {
       this.statusBar.styleLightContent();
       this.splashScreen.hide();
       this.storage.initializeDb();
-      this.loadCounters();
+      // this.loadCounters();
 
     });
   }
@@ -106,38 +110,41 @@ export class AppComponent implements OnInit {
 
       } else {
 
-      console.log(user);
 
-     // this.db.collection(`users/${user}/counters`).snapshotChanges().subscribe((colSnap) => {
+    console.log(user);
+
+    this.userId = user.uid; 
+      
+     this.db.collection(`users/${user.uid}/counters`).snapshotChanges().subscribe((colSnap) => {
     
 
-        // this.appPages = [
-        //   {
-        //     title: 'Standard',
-        //     url: '/folder/standard/0/0/0',
-        //     counter: 0,
-        //     id: null,
-        //     limit: null,
-        //   },
+        this.appPages = [
+          {
+            title: 'Standard',
+            url: '/folder/standard/0/0/0',
+            counter: 0,
+            id: null,
+            limit: null,
+          },
           
-        // ];
-        // if(colSnap) {
-        //   colSnap.forEach((item) => {
+        ];
+        if(colSnap) {
+          colSnap.forEach((item) => {
 
-        //     let counter: any = item.payload.doc.data();
-
-        //     this.appPages.push(
-        //       {
-        //         title: counter.name,
-        //         url: '/folder/'+counter.name+'/'+counter.counter+'/'+counter.id+'/'+counter.limit, 
-        //         counter: counter.counter,
-        //         id: counter.id,  
-        //         limit: counter.limit,
-        //       }
-        //   )
-        // })
-        // }
-  //  });  
+            let counter: any = item.payload.doc.data();
+            console.log(item.payload.doc.data());
+            this.appPages.push(
+              {
+                title: counter.name,
+                url: '/folder/'+counter.name+'/'+counter.counter+'/'+item.payload.doc.id+'/'+counter.limit, 
+                counter: counter.counter,
+                id: item.payload.doc.id,  
+                limit: counter.limit,
+              }
+          )
+        })
+        }
+   });  
   }
     });
 
@@ -153,7 +160,7 @@ export class AppComponent implements OnInit {
   menuClose() {
     console.log("closed")
 
-    this.adMobFree.banner.show();
+    //this.adMobFree.banner.show();
 
   }
   
@@ -237,57 +244,55 @@ export class AppComponent implements OnInit {
     this.newCounter.name = name;
     this.newCounter.limit = limit;
 
-    this.db.collection(`users/${this.afAuth.currentUser}/counters`).add({
+    this.db.collection(`users/${this.userId}/counters`).add({
       id: this.newCounter.id,
       counter: counter,
       name: name,
       limit: limit,
     })
 
-    this.storage.addItem(this.newCounter).then(item => {
-      this.newCounter = <CounterItem>{};
-      this.loadCounters();
-    })
+    // this.storage.addItem(this.newCounter).then(item => {
+    //   this.newCounter = <CounterItem>{};
+    //   this.loadCounters();
+    // })
   }
 
   loadCounters() {
     console.log("openedddd");
 
-    this.adMobFree.banner.hide();
+    // this.adMobFree.banner.hide();
 
-    this.storage.getItems().then((items: CounterItem[]) => {
-      this.appPages = [
-        {
-          title: 'Standard',
-          url: '/folder/standard/0/0/0',
-          counter: 0,
-          id: null,
-          limit: null,
-        },
+  //   this.storage.getItems().then((items: CounterItem[]) => {
+  //     this.appPages = [
+  //       {
+  //         title: 'Standard',
+  //         url: '/folder/standard/0/0/0',
+  //         counter: 0,
+  //         id: null,
+  //         limit: null,
+  //       },
         
-      ];
-      if(items) {
-        items.forEach((item) => {
-          this.appPages.push(
-            {
-              title: item.name,
-              url: '/folder/'+item.name+'/'+item.counter+'/'+item.id+'/'+item.limit, 
-              counter: item.counter,
-              id: item.id,  
-              limit: item.limit,
-            }
-        )
-      })
-      }
+  //     ];
+  //     if(items) {
+  //       items.forEach((item) => {
+  //         this.appPages.push(
+  //           {
+  //             title: item.name,
+  //             url: '/folder/'+item.name+'/'+item.counter+'/'+item.id+'/'+item.limit, 
+  //             counter: item.counter,
+  //             id: item.id,  
+  //             limit: item.limit,
+  //           }
+  //       )
+  //     })
+  //     }
       
-  });
+  // });
 }
 
 async delete(id: string) {
 
-  this.storage.deleteItem(id).then(async () => {
-    //this.showToast('Item removed');
-    this.loadCounters();
+  this.db.doc(`users/${this.userId}/counters/${id}`).delete().then(async () => {
     this.router.navigateByUrl(`/folder/standard/0/0/0`);
 
     const toast = await this.toastCtrl.create({
@@ -295,8 +300,20 @@ async delete(id: string) {
       duration: 2000
     });
     toast.present();
-
   });
+
+  // this.storage.deleteItem(id).then(async () => {
+  //   //this.showToast('Item removed');
+  //   this.loadCounters();
+  //   this.router.navigateByUrl(`/folder/standard/0/0/0`);
+
+  //   const toast = await this.toastCtrl.create({
+  //     message: 'Counter deleted',
+  //     duration: 2000
+  //   });
+  //   toast.present();
+
+  // });
 
 }
 
@@ -310,5 +327,10 @@ async showErrorToast(data: any) {
   toast.present();
 }
 
+signOut() {
+  this.afAuth.signOut().then(()=> {
+    location.reload();
+  })
+}
 
 }
