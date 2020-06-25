@@ -32,12 +32,17 @@ export class AppComponent implements OnInit {
     
   ];
 
-  //  bannerConfig: AdMobFreeBannerConfig = {
-  //   id: 'ca-app-pub-4479311405222115/3044213231',
-  //   isTesting: false,
-  //   autoShow: true,
-  //   size: 'BANNER',
-  // }
+  error;
+
+  // ca-app-pub-4479311405222115~1301694640
+  // ca-app-pub-4479311405222115/9918551261
+
+   bannerConfig: AdMobFreeBannerConfig = {
+    id: 'ca-app-pub-4479311405222115/9918551261',
+    isTesting: true,
+    autoShow: true,
+    size: 'BANNER',
+  }
   
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
@@ -59,11 +64,10 @@ export class AppComponent implements OnInit {
   initializeApp() {
     this.platform.ready().then(() => {
 
-    //   this.adMobFree.banner.config(this.bannerConfig);
-    //   this.adMobFree.banner.prepare().then(() => {
-
-
-    // }).catch(e=> console.log(e))
+    this.adMobFree.banner.config(this.bannerConfig);
+    this.adMobFree.banner.prepare().then(() => {
+      // this.adMobFree.banner.show();
+    }).catch(e=> { this.error = e})
 
 
       this.statusBar.styleLightContent();
@@ -85,13 +89,13 @@ export class AppComponent implements OnInit {
 
   menuOpened() {
     console.log("opened")
-    //this.adMobFree.banner.hide();
+    this.adMobFree.banner.hide();
   }
 
   menuClose() {
     console.log("closed")
 
-  //  this.adMobFree.banner.show();
+    this.adMobFree.banner.show();
 
   }
   
