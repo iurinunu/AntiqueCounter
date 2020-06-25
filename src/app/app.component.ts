@@ -71,22 +71,27 @@ export class AppComponent implements OnInit {
   initializeApp() {
     this.platform.ready().then(() => {
 
+      alert("PLATFORM READY");
+
       this.afAuth.authState.subscribe((user) => {
+        alert("XXXX READY");
+
         if(!user) {
-          this.loggedIn = false;
+          alert("there is user");
+
           this.router.navigateByUrl('login')
         } else {
-          this.loggedIn = true;
+          alert("there is NOT user");
 
           this.router.navigateByUrl('/folder/standard/0/0/0');
         }
       })
 
-      this.adMobFree.banner.config(this.bannerConfig);
-      this.adMobFree.banner.prepare().then(() => {
+      // this.adMobFree.banner.config(this.bannerConfig);
+      // this.adMobFree.banner.prepare().then(() => {
 
 
-    }).catch(e=> console.log(e))
+  //  }).catch(e=> console.log(e))
 
 
       this.statusBar.styleLightContent();
